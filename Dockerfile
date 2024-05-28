@@ -14,8 +14,6 @@ COPY . .
 # Install any dependencies
 RUN pip install Flask --no-cache-dir -r requirements.txt
 
-
-
 # Command to run on container start
 CMD [ "python", "./app.py" ]
 
