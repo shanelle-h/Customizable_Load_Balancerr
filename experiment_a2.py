@@ -1,27 +1,44 @@
-import requests
+import asyncio
+import aiohttp
+import matplotlib.pyplot as plt
+import random
 
-def test_endpoints():
-    # GET /rep
-    response = requests.get('http://localhost:5000/rep')
-    print(response.json())
+async def fetch(session, url):
+    async with session.get(url) as response:
+        return await response.json()
 
-    # POST /add
-    response = requests.post('http://localhost:5000/add', json={"n": 2, "hostnames": ["S5", "S4"]})
-    print(response.json())
+async def make_requests(n):
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch(session, f'http://localhost:5000/rep') for _ in range(10000)]
+        responses = await asyncio.gather(*tasks)
+    return responses
 
-    # DELETE /rm
-    response = requests.delete('http://localhost:5000/rm', json={"n": 1, "hostnames": ["S5"]})
-    print(response.json())
+async def main():
+    load_data = {}
+    for n in range(2, 7):
+        responses = await make_requests(n)
+        server_counts = {}
+        for response in responses:
+            # Extracting the server names
+            servers = response['message']['replicas']
+            
+            # For simplicity, we assume each request is handled by a random server in the list
+            server = random.choice(servers)
+            
+            # Count the requests per server
+            server_counts[server] = server_counts.get(server, 0) + 1
+        
+        load_data[n] = server_counts
 
-def simulate_server_failure():
-    # Simulate server failure (implementation depends on your environment)
-    print("Simulating server failure...")
-    # Example command to stop a server container (adjust based on your setup)
-    # os.system("docker stop server_container_name")
-    
-    # Observe how the load balancer spawns a new instance (depends on your setup)
-    print("Observing load balancer response to failure...")
+    # Debugging: Print the load data to inspect the final counts
+    print(load_data)
+
+    plt.plot(load_data.keys(), [sum(values.values()) / len(values) for values in load_data.values()])
+    plt.xlabel('Number of Server Containers (N)')
+    plt.ylabel('Average Request Count per Server')
+    plt.title('Load Distribution Among Servers for Different N values')
+    plt.savefig('experiment_A2_results.png')
+    plt.show()
 
 if __name__ == '_main_':
-    test_endpoints()
-    simulate_server_failure()
+    asyncio.run(main()) 
