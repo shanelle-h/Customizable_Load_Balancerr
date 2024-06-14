@@ -1,5 +1,85 @@
 **README: Task 1 - Task 4**
 
+### Design Section
+
+#### Overview
+The project implements a customizable load balancer with consistent hashing to distribute client requests across multiple server replicas. The system is designed to be scalable and fault-tolerant, ensuring efficient load distribution and quick recovery from server failures. The architecture employs Docker for containerization, allowing seamless deployment and management of server instances. Each server instance operates independently, enabling elastic scaling where servers can be added or removed based on current load and performance metrics.
+
+Additionally, the system includes monitoring and logging mechanisms to track server health and request distribution. This helps in proactive identification and resolution of potential issues, ensuring high availability and reliability of the service.
+
+#### Components
+1. **Web Server**: Handles HTTP requests and provides endpoints for home and heartbeat. Each server instance runs inside a Docker container, making it easy to scale horizontally by adding more instances. The web server also includes basic health checks to ensure each instance is operational.
+2. **Consistent Hash Map**: Used for mapping client requests to server instances. The consistent hash map ensures that the addition or removal of servers minimally impacts the mapping of existing requests. This reduces the need for rehashing and helps maintain a stable request distribution across servers.
+3. **Load Balancer**: Routes client requests using consistent hashing and manages server replicas. It monitors the health of server instances using heartbeat signals and dynamically adjusts the server pool based on load and server availability. The load balancer can also redistribute requests in case of server failures to ensure continuous service availability.
+
+**System Architecture Diagram**:
+```plaintext
++---------------------+
+|      Client         |
++---------+-----------+
+          |
+          v
++---------+-----------+
+|    Load Balancer    |
++---------+-----------+
+          |
+  +-------+-------+
+  |       |       |
+  v       v       v
++---+   +---+   +---+
+| S |   | S |   | S |
+| e |   | e |   | e |
+| r |   | r |   | r |
+| v |   | v |   | v |
+| e |   | e |   | e |
+| r |   | r |   | r |
+| 1 |   | 2 |   | 3 |
++---+   +---+   +---+
+```
+
+---
+
+### Distributed Queue with Sharding
+
+#### Overview
+A distributed queue with sharding is implemented to divide the workload among multiple server instances. Each shard represents a portion of the queue, and consistent hashing ensures that each shard is mapped to a specific server instance. This approach minimizes the load on any single server and provides a mechanism for scaling the system by adding more shards and servers. The sharding mechanism allows for efficient handling of high throughput and ensures that the system can accommodate growing demand.
+
+#### Implementation
+1. **Consistent Hashing**: Ensures that each request is mapped to the appropriate server based on the hash value. This technique reduces the number of remappings required when a server is added or removed. Consistent hashing distributes the keys (or requests) uniformly across the available nodes (servers), minimizing hotspots and ensuring balanced load distribution.
+2. **Queue Sharding**: Divides the queue into multiple shards, each managed by a different server instance. The consistent hashing algorithm ensures that the mapping of requests to shards remains balanced, even as servers are added or removed from the cluster. Each shard operates independently, processing requests assigned to it, which reduces contention and improves overall system performance.
+
+**Distributed Queue with Sharding Diagram**:
+```plaintext
++-----------------+
+|  Request Queue  |
++--------+--------+
+         |
+         v
++--------+--------+
+| Consistent Hash |
++--------+--------+
+         |
+  +------+--------+------+
+  |      |        |      |
+  v      v        v      v
++---+  +---+    +---+  +---+
+| S |  | S |    | S |  | S |
+| h |  | h |    | h |  | h |
+| a |  | a |    | a |  | a |
+| r |  | r |    | r |  | r |
+| d |  | d |    | d |  | d |
+| 1 |  | 2 |    | 3 |  | 4 |
++---+  +---+    +---+  +---+
+```
+
+---
+
+### Assumptions
+
+1. **Network Reliability**: Assumes a reliable network with minimal packet loss. The system is designed to handle transient network issues, but prolonged network failures could affect performance.
+2. **Uniform Load Distribution**: Assumes that client requests are uniformly distributed. If the requests are skewed towards specific keys, additional mechanisms might be needed to balance the load more effectively.
+3. **Server Homogeneity**: Assumes that all servers are using one
+
 **Task 1: Server Implementation**
 
 **Overview:**
