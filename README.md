@@ -90,6 +90,7 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 2. **Python**: For implementing the server, load balancer, and consistent hash map.
 3. **Flask**: For handling HTTP requests within the server and load balancer.
 4. **Git**: For version control and managing the project repository.
+5. **Miniconda**: This is a free minimal installer for Anaconda with minimum packages that allows one to use virtual environments. It is lightweight and quick.
 
 ---
 
@@ -117,6 +118,35 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 4. **Set Up Environment Variables**:
    
    Ensure the `.env` file is correctly configured with necessary environment variables.
+
+5. **Set up Miniconda**:
+   **Windows**
+   These three commands quickly and quietly install the latest 64-bit version of the installer and then clean up after themselves. To install a different version or architecture of Miniconda for Windows, change the name of the .exe installer in the curl command.
+
+   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe -o miniconda.exe
+   start /wait "" miniconda.exe /S
+   del miniconda.exe
+
+   After installing, open the “Anaconda Prompt (miniconda3)” program to use Miniconda3. For the Powershell version, use “Anaconda Powershell Prompt (miniconda3)”.
+   **Mac OS**
+ mkdir -p ~/miniconda3
+curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+
+After installing, initialize your newly-installed Miniconda. The following commands initialize for bash and zsh shells:
+~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh
+   **Linux**
+   
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+
+After installing, initialize your newly-installed Miniconda. The following commands initialize for bash and zsh shells:
+~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh
 
 ---
 
@@ -247,4 +277,4 @@ Task 4 involves testing and analyzing the performance of the load balancer imple
 - **A-4:** Modify the hash functions and report the observations from A-1 and A-2.
 
 **Conclusion:**
-Overall, the load balancer implementation effectively distributes the load among server containers and demonstrates scalability and fault tolerance. The analysis provides insights into the performance and behavior of the load balancer in various scenarios, contributing to the understanding of distributed systems and load balancing techniques.
+Overall, the load balancer implementation effectively distributes the load among server containers and demonstrates scalability and fault tolerance. The analysis provides insights into the performance and behavior of the load balancer in various scenarios, contributing to the understanding of distributed systems and load balancing techniques. The other testing images are found in rm_responses.json.
