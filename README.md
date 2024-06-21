@@ -271,8 +271,12 @@ Deploy the load balancer container using the provided Dockerfile, Docker-compose
 Task 4 involves testing and analyzing the performance of the load balancer implementation in different scenarios, including load distribution among server containers and recovery from server container failure.
 
 **Experiments:**
-- **A-1:** Launch 10000 async requests on N = 3 server containers and report the request count handled by each server instance.
-- **A-2:** Increment N from 2 to 6 and launch 10000 requests on each increment. Report the average load of the servers at each run.
+- **A-1:** Launch 10000 async requests on N = 3 server containers and report the request count handled by each server instance. Below is a snapshot of the result
+  ![image](https://github.com/alexwafula/Customizable_Load_Balancerr/assets/91899603/d0d6956d-4d32-48ef-a02d-f108d8887771)
+
+- **A-2:** Increment N from 2 to 6 and launch 10000 requests on each increment. Report the average load of the servers at each run. Below is a snapshot of the result
+  ![image](https://github.com/alexwafula/Customizable_Load_Balancerr/assets/91899603/fc842e83-eb33-4bb2-954b-67f9141ede24)
+
 - **A-3:** Test all endpoints of the load balancer and demonstrate that it spawns a new instance quickly in case of server failure.
 - **A-4:** Modify the hash functions and report the observations from A-1 and A-2.
 
