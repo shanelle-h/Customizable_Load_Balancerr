@@ -282,3 +282,4 @@ Task 4 involves testing and analyzing the performance of the load balancer imple
 
 **Conclusion:**
 Overall, the load balancer implementation effectively distributes the load among server containers and demonstrates scalability and fault tolerance. The analysis provides insights into the performance and behavior of the load balancer in various scenarios, contributing to the understanding of distributed systems and load balancing techniques. The other testing images are found in rm_responses.json.
+
